@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TwitchStream</string>
+    <string name="send_feedback">Send Feedback</string>
+</resources>
