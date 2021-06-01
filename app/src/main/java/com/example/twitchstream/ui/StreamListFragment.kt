@@ -5,13 +5,16 @@ import android.util.Log
 import android.view.*
 import android.widget.AbsListView
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.twitchstream.R
 import com.example.twitchstream.data.NetworkChecker
 import com.example.twitchstream.db.entity.TopGame
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 private const val TAG = "StreamListFragment"
 
@@ -53,8 +56,15 @@ class StreamListFragment : NetworkChecker() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.topGames.observe(viewLifecycleOwner, {
-            it?.let {
+            it?.let { it ->
                 list = it
+                viewModel.status.value.let { status ->
+                    /** Created by ID
+                     * date: 01-Jun-21, 10:17 PM
+                     * TODO: doen't work
+                     */
+                    if (!status) adapter.updateLocal(status)
+                }
                 adapter.updateList(list)
             }
         })
@@ -92,16 +102,17 @@ class StreamListFragment : NetworkChecker() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-     return when (item.itemId) {
-         R.id.sendFeedback -> {
-             Log.i(TAG, "--> onOptionsItemSelected: ")
-             Toast.makeText(requireContext(), "Send feedback", Toast.LENGTH_SHORT)
-                 .show()
-             RateDialogFragment().show(childFragmentManager, "RateDialogFragment")
-             true
-         }
-         else -> {
-             super.onOptionsItemSelected(item)
-         }
-     }}
+        return when (item.itemId) {
+            R.id.sendFeedback -> {
+                Log.i(TAG, "--> onOptionsItemSelected: ")
+                Toast.makeText(requireContext(), "Send feedback", Toast.LENGTH_SHORT)
+                    .show()
+                RateDialogFragment().show(childFragmentManager, "RateDialogFragment")
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+    }
 }

@@ -1,7 +1,9 @@
 package com.example.twitchstream.db.converter
 
 import androidx.room.TypeConverter
+import com.example.twitchstream.db.entity.Box
 import com.example.twitchstream.db.entity.Game
+import com.example.twitchstream.db.entity.Logo
 import java.util.*
 
 class GameConverter {
@@ -12,6 +14,11 @@ class GameConverter {
 
     @TypeConverter
     fun toModel(string: String): Game{
-        return Game(name = string)
+        return Game(
+            id = 0,
+            name = string,
+            logo = Logo(),
+            box = Box(small = "", large = "", medium = "", template = ""),
+            giantbombId = 0)
     }
 }

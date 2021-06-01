@@ -5,10 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
 import com.example.twitchstream.db.converter.GameConverter
 import com.example.twitchstream.db.entity.TopGame
 
-@Database(entities = [TopGame::class], version = 1)
+@Database(entities = [TopGame::class], version = 2)
 @TypeConverters(GameConverter::class)
 abstract class StreamDatabase : RoomDatabase() {
     abstract fun streamDao(): StreamDao
@@ -25,6 +26,7 @@ abstract class StreamDatabase : RoomDatabase() {
             context.applicationContext,
             StreamDatabase::class.java,
             "stream_database"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
     }
 }

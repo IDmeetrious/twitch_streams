@@ -1,6 +1,6 @@
 package com.example.twitchstream.ui
 
-import android.graphics.drawable.Drawable
+import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Base64.decode
 import android.util.Log
@@ -11,20 +11,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.example.twitchstream.R
 import com.example.twitchstream.db.entity.TopGame
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
 
 private const val TAG = "StreamListAdapter"
 
 class StreamListAdapter(private var list: List<TopGame>) :
     RecyclerView.Adapter<StreamListAdapter.StreamViewHolder>() {
+    private var isPersistent: Boolean = false
+
     class StreamViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView
         val titleTv: TextView
@@ -47,6 +46,11 @@ class StreamListAdapter(private var list: List<TopGame>) :
         notifyDataSetChanged()
     }
 
+    fun updateLocal(status: Boolean){
+        Log.i(TAG, "--> updateLocal: ")
+        isPersistent = status
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StreamViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.stream_list_item, parent, false)
@@ -58,11 +62,26 @@ class StreamListAdapter(private var list: List<TopGame>) :
 
 
         item.let {
-
-            Glide.with(holder.itemView)
-                .load(it.game.logo?.large)
-                .placeholder(android.R.drawable.gallery_thumb)
-                .into(holder.imageView)
+            Log.i(TAG, "--> onBindViewHolder: persistentStatus[$isPersistent]")
+            if (isPersistent) {
+                Log.i(TAG, "--> onBindViewHolder: length[${it.game.logo?.small?.length}]")
+                CoroutineScope(Dispatchers.Main).launch {
+                    val byteImg = decode(it.game.logo?.small, Base64.DEFAULT)
+                    Log.i(TAG, "--> onBindViewHolder: imageString[${it.game.logo?.small}]")
+                    Log.i(TAG, "--> onBindViewHolder: size[${byteImg.size}]")
+                    val decodedImg = BitmapFactory.decodeByteArray(byteImg, 0, byteImg.size)
+                    holder.imageView.setImageBitmap(decodedImg)
+                }
+            } else {
+                Glide.with(holder.itemView)
+                    .load(it.game.logo?.small)
+                    .placeholder(android.R.drawable.gallery_thumb)
+                    .into(holder.imageView)
+            }
+//            Glide.with(holder.itemView)
+//                .load(it.game.logo?.small)
+//                .placeholder(android.R.drawable.gallery_thumb)
+//                .into(holder.imageView)
 
             holder.titleTv.text = it.game.name
             holder.channelsTv.text = "${it.channels}"

@@ -8,11 +8,11 @@ import java.util.*
 class BoxConverter {
     @TypeConverter
     fun fromModel(box: Box): String{
-        return box.gameName
+        return box.toString()
     }
 
     @TypeConverter
     fun toModel(string: String): Box{
-        return Box(gameName = string)
+        return Box("", "","", "")
     }
 }

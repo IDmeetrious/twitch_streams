@@ -3,6 +3,8 @@ package com.example.twitchstream.app
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.module.AppGlideModule
 
 private const val TAG = "App"
 class App: Application() {
