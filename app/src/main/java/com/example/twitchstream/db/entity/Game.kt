@@ -9,14 +9,12 @@ import com.google.gson.annotations.SerializedName
 class Game(
     @PrimaryKey
     @ColumnInfo(name = "_id")
-    val id: Int = 0,
-    val box: Box? = null,
+    val id: Int,
+    @Embedded
+    val box: Box,
     @ColumnInfo(name = "giantbomb_id")
-    val giantbombId: Int = 0,
-    /** Created by ID
-     * date: 26-May-21, 5:19 PM
-     * TODO: should save images
-     */
-    val logo: Logo? = null,
-    val name: String = ""
+    val giantbombId: Int,
+    @Embedded
+    val logo: Logo,
+    val name: String
 )
