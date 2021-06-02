@@ -46,7 +46,7 @@ class StreamListViewModel(): ViewModel() {
                     Log.i(TAG, "--> onResponse: ${response.body()}")
                     response.body()?.top.let {
                         CoroutineScope(Dispatchers.IO).launch {
-                            _status.emit(true)
+                            _status.emit(false)
                         }
                         // Update liveData
                         _topGames.postValue(it)
@@ -63,7 +63,7 @@ class StreamListViewModel(): ViewModel() {
                 Log.e(TAG, "--> onFailure: ${t.message}")
                 // Try to load from local
                 CoroutineScope(Dispatchers.IO).launch {
-                    _status.emit(false)
+                    _status.emit(true)
 
                     repository.getListFromLocal()?.let {
                         Log.i(TAG, "--> onFailure: loadFromLocal[${it.size}]")

@@ -58,13 +58,14 @@ class StreamListFragment : NetworkChecker() {
         viewModel.topGames.observe(viewLifecycleOwner, {
             it?.let { it ->
                 list = it
-                viewModel.status.value.let { status ->
-                    /** Created by ID
-                     * date: 01-Jun-21, 10:17 PM
-                     * TODO: doen't work
-                     */
-                    if (!status) adapter.updateLocal(status)
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.status.collect { status ->
+
+                        Log.i(TAG, "--> onViewCreated: status=$status")
+                        adapter.updateLocal(status)
+                    }
                 }
+
                 adapter.updateList(list)
             }
         })
