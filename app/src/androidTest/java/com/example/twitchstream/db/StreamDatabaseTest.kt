@@ -51,7 +51,7 @@ class StreamDatabaseTest : TestCase() {
             TopGame(1,
                 game = Game(1,
                     box = Box("game1",),
-                    logo = logo, giantbombId = 0, name = "Dota2"),
+                    logo = logo, giantBombId = 0, name = "Dota2"),
                 channels = 1, viewers = 1)
         dao.insertAll(topGame)
         val topGames = dao.getAll()

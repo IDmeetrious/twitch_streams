@@ -13,6 +13,10 @@ class BoxConverter {
 
     @TypeConverter
     fun toModel(string: String): Box{
-        return Box("", "","", "")
+        /** Created by ID
+         * date: 02-Jun-21, 7:38 AM
+         * TODO: create model associate with string
+         */
+        return Box()
     }
 }
