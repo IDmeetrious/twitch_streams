@@ -4,7 +4,6 @@ import androidx.room.TypeConverter
 import com.example.twitchstream.db.entity.Box
 import com.example.twitchstream.db.entity.Game
 import com.example.twitchstream.db.entity.Logo
-import java.util.*
 
 class GameConverter {
     @TypeConverter
@@ -18,7 +17,7 @@ class GameConverter {
             id = 0,
             name = string,
             logo = Logo(),
-            box = Box(small = "", large = "", medium = "", template = ""),
-            giantbombId = 0)
+            box = Box(),
+            giantBombId = 0)
     }
 }

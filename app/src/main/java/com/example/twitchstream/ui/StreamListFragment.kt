@@ -94,7 +94,6 @@ class StreamListFragment : NetworkChecker() {
                 }
             }
         })
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

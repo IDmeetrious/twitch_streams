@@ -13,7 +13,7 @@ class Game(
     @Embedded
     val box: Box,
     @ColumnInfo(name = "giantbomb_id")
-    val giantbombId: Int,
+    val giantBombId: Int,
     @Embedded
     val logo: Logo,
     val name: String

@@ -27,6 +27,7 @@ class Repository(private val context: Context) {
     }
 
     fun saveToLocal(topGame: TopGame) {
+
         val tGame = topGame
         CoroutineScope(Dispatchers.IO).launch {
             val income = URL(topGame.game.logo?.small).openStream()
