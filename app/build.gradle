@@ -55,6 +55,10 @@ dependencies {
     // Retrofit
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit_version"
+
+    // RxJava3
+    implementation "io.reactivex.rxjava3:rxjava:3.0.13"
 
     // Room
     implementation("androidx.room:room-runtime:$room_version")
