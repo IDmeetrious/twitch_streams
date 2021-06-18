@@ -40,7 +40,7 @@ class StreamListFragment : NetworkChecker() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        fragment = VideosListFragment()
+        if (fragment == null) fragment = VideosListFragment()
     }
 
     override fun onCreateView(
@@ -101,18 +101,6 @@ class StreamListFragment : NetworkChecker() {
 
     override fun onStart() {
         super.onStart()
-//        adapter?.game.value?.let { topGame ->
-//            Log.i(TAG, "--> onStart: $topGame")
-//            val args = Bundle().also {
-//                it.putString(GAME_NAME, topGame)
-//            }
-//            fragment?.arguments = args
-//            fragment?.let {
-//                childFragmentManager.beginTransaction()
-//                    .add(it.javaClass, args, "VideosListFragment")
-//                    .commit()
-//            }
-//        }
         CoroutineScope(Dispatchers.Main).launch {
             adapter?.game.collect { game ->
                 Log.i(TAG, "--> onStart: game=${game}")

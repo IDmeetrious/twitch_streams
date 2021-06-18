@@ -1,24 +1,32 @@
 package com.example.twitchstream.view.video_full
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.MediaController
 import android.widget.VideoView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.twitchstream.R
-import com.example.twitchstream.db.entity.TopGame
+import com.example.twitchstream.util.GAME_ID
+import com.example.twitchstream.viewmodel.FullVideoViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-class FullVideoFragment: Fragment() {
-    private var videoView: VideoView? = null
-    private var game: TopGame? = null
-    override fun onCreate(state: Bundle?) {
-        super.onCreate(state)
-        arguments?.let {
-            
-        }
+private const val TAG = "FullVideoFragment"
+class FullVideoFragment : Fragment() {
 
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(FullVideoViewModel::class.java)
     }
+
+    private var videoView: VideoView? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,5 +37,31 @@ class FullVideoFragment: Fragment() {
             videoView = it.findViewById(R.id.videoView)
         }
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.video.collect {
+                it?.url?.let { uri ->
+                    Log.i(TAG, "--> onViewCreated: $uri")
+                    /** Created by ID
+                     * date: 18-Jun-21, 3:44 PM
+                     * TODO: doesn't work with this url format "www.example.com/video12312312"
+                     */
+                    videoView?.setVideoURI(Uri.parse(uri))
+                    videoView?.setMediaController(MediaController(requireContext()))
+                    videoView?.requestFocus(0)
+                    videoView?.start()
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        arguments?.let {
+            viewModel.getVideo(it.getString(GAME_ID, ""))
+        }
     }
 }
