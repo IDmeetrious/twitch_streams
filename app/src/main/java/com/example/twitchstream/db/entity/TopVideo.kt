@@ -1,6 +1,7 @@
 package com.example.twitchstream.db.entity
 
 import com.google.gson.annotations.SerializedName
+import retrofit2.http.Url
 
 data class TopVideo(
     @SerializedName("_id")
@@ -10,5 +11,6 @@ data class TopVideo(
     @SerializedName("published_at")
     val publishedAt: String = "",
     @SerializedName("preview")
-    val previewUrl: Preview? = null
+    val previewUrl: Preview? = null,
+    val url: String = ""
 )

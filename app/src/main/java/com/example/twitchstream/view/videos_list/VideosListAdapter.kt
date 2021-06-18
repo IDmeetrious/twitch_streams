@@ -7,10 +7,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.twitchstream.R
 import com.example.twitchstream.db.entity.TopVideo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 private const val TAG = "VideosListAdapter"
+
 class VideosListAdapter(private var list: List<TopVideo>) :
     RecyclerView.Adapter<VideoViewHolder>() {
+
+    private var _videoId: MutableStateFlow<String> = MutableStateFlow("")
+    val videoId: StateFlow<String> = _videoId
 
     fun setList(list: List<TopVideo>) {
         this.list = list
@@ -34,6 +43,11 @@ class VideosListAdapter(private var list: List<TopVideo>) :
                 Glide.with(holder.itemView)
                     .load(it.medium)
                     .into(iv)
+            }
+        }
+        holder.itemView.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                _videoId.emit(item.id)
             }
         }
     }

@@ -10,10 +10,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.twitchstream.R
+import com.example.twitchstream.util.GAME_ID
 import com.example.twitchstream.util.GAME_NAME
 import com.example.twitchstream.view.games_list.StreamListFragment
+import com.example.twitchstream.view.video_full.FullVideoFragment
 import com.example.twitchstream.viewmodel.StreamListViewModel
 import com.example.twitchstream.viewmodel.VideoListViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 private const val TAG = "VideosListFragment"
 class VideosListFragment: Fragment() {
@@ -22,8 +28,14 @@ class VideosListFragment: Fragment() {
         ViewModelProvider(this).get(VideoListViewModel::class.java)
     }
 
+    private var fragment: FullVideoFragment? = null
     private var adapter: VideosListAdapter? = null
     private var rv: RecyclerView? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (fragment == null) fragment = FullVideoFragment()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +69,22 @@ class VideosListFragment: Fragment() {
         arguments?.let {
             val game = it.getString(GAME_NAME,"")
             viewModel.getTopVideos(game)
+        }
+        CoroutineScope(Dispatchers.Main).launch {
+            adapter?.videoId?.collect { id ->
+                if (id.isNotEmpty()){
+                    val args = Bundle().apply {
+                        putString(GAME_ID, id)
+                    }
+                    fragment?.arguments = args
+
+                    fragment?.let { fr ->
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.container, fr)
+                            .commit()
+                    }
+                }
+            }
         }
     }
 }

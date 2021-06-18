@@ -2,7 +2,6 @@ package com.example.twitchstream.data
 
 import android.content.Context
 import android.util.Base64
-import android.util.Log
 import com.example.twitchstream.api.ApiClient
 import com.example.twitchstream.api.response.TopGameResponse
 import com.example.twitchstream.api.response.TopVideosResponse
@@ -11,14 +10,9 @@ import com.example.twitchstream.db.entity.TopGame
 import com.example.twitchstream.db.entity.TopVideo
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.net.URL
 
 private const val TAG = "Repository"
@@ -52,4 +46,6 @@ class Repository(private val context: Context) {
     fun getGamesFromRemote(offset: Int): Single<TopGameResponse> = api.topGames(offset)
 
     fun getVideosFromRemote(game: String): Single<TopVideosResponse> = api.topVideos(game)
+
+    fun getVideo(videoId: String): Single<TopVideo> = api.getVideo(videoId)
 }
