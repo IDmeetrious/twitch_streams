@@ -1,21 +1,16 @@
-package com.example.twitchstream.ui
+package com.example.twitchstream.view
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.arch.core.executor.TaskExecutor
 import androidx.fragment.app.DialogFragment
 import com.example.twitchstream.R
-import com.google.android.play.core.review.ReviewInfo
-import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.android.play.core.review.model.ReviewErrorCode
 
 private const val TAG = "RateDialogFragment"
 class RateDialogFragment : DialogFragment() {

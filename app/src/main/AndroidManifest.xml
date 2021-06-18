@@ -16,7 +16,7 @@
         android:networkSecurityConfig="@xml/network_config"
         android:theme="@style/Theme.TwitchStream"
         tools:targetApi="n">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

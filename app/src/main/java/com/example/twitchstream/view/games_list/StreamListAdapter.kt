@@ -1,4 +1,4 @@
-package com.example.twitchstream.ui
+package com.example.twitchstream.view.games_list
 
 import android.graphics.BitmapFactory
 import android.util.Base64
@@ -15,19 +15,17 @@ import com.example.twitchstream.R
 import com.example.twitchstream.db.entity.TopGame
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.concurrent.atomic.AtomicBoolean
 
 private const val TAG = "StreamListAdapter"
 
 class StreamListAdapter(private var list: List<TopGame>) :
     RecyclerView.Adapter<StreamListAdapter.StreamViewHolder>() {
     private var isPersistent: Boolean = false
-    private var _game: MutableStateFlow<TopGame?> = MutableStateFlow(null)
-    val game: StateFlow<TopGame?> = _game
+    private var _game: MutableStateFlow<String> = MutableStateFlow("")
+    val game: StateFlow<String> = _game
 
     class StreamViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView
@@ -89,8 +87,11 @@ class StreamListAdapter(private var list: List<TopGame>) :
             holder.viewersTv.text = "${it.viewers}"
         }
         holder.itemView.setOnClickListener {
-            Log.i(TAG, "--> onBindViewClicked: ${item.gameId}")
-            _game.value = item
+            Log.i(TAG, "--> onBindViewClicked: ${item.game.name}")
+            CoroutineScope(Dispatchers.IO).launch {
+                _game.emit(item.game.name)
+            }
+//            _game.value = item.game.name
         }
 
     }
