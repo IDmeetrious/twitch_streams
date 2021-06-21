@@ -26,6 +26,10 @@ class MainActivity : AppCompatActivity() {
             val fr: Fragment? = fm.findFragmentById(R.id.container)
             Log.i(TAG, "--> onBackStackPressed: ")
             fr?.let {
+                /** Created by ID
+                 * date: 21-Jun-21, 2:58 PM
+                 * TODO: add full video fragment
+                 */
                 if (it is VideosListFragment)
                     fm.beginTransaction()
                         .replace(R.id.container, StreamListFragment())
