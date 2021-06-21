@@ -1,11 +1,14 @@
 package com.example.twitchstream.view.video_full
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebView
 import android.widget.MediaController
 import android.widget.VideoView
 import androidx.fragment.app.Fragment
@@ -25,7 +28,8 @@ class FullVideoFragment : Fragment() {
         ViewModelProvider(this).get(FullVideoViewModel::class.java)
     }
 
-    private var videoView: VideoView? = null
+//    private var videoView: VideoView? = null
+    private var webView: WebView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,13 +38,17 @@ class FullVideoFragment : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_video_full, container, false)
         rootView.let {
-            videoView = it.findViewById(R.id.videoView)
+//            videoView = it.findViewById(R.id.videoView)
+            webView = it.findViewById(R.id.webView)
         }
         return rootView
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        webView?.settings?.javaScriptEnabled = true
+        webView?.webChromeClient = WebChromeClient()
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.video.collect {
                 it?.url?.let { uri ->
@@ -49,13 +57,17 @@ class FullVideoFragment : Fragment() {
                      * date: 18-Jun-21, 3:44 PM
                      * TODO: doesn't work with this url format "www.example.com/video12312312"
                      */
-                    videoView?.setVideoURI(Uri.parse(uri))
-                    videoView?.setMediaController(MediaController(requireContext()))
-                    videoView?.requestFocus(0)
-                    videoView?.start()
+//                    videoView?.setVideoURI(Uri.parse(uri))
+//                    videoView?.setMediaController(MediaController(requireContext()))
+//                    videoView?.requestFocus(0)
+//                    videoView?.start()
+//                    webView?.loadUrl("file:///android_asset/web/index.html")
+                    webView?.loadUrl(uri)
                 }
             }
         }
+
+
     }
 
     override fun onStart() {
