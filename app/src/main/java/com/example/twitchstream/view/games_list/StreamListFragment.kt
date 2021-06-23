@@ -5,20 +5,19 @@ import android.util.Log
 import android.view.*
 import android.widget.AbsListView
 import android.widget.Toast
-import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.twitchstream.R
 import com.example.twitchstream.data.NetworkChecker
 import com.example.twitchstream.db.entity.TopGame
+import com.example.twitchstream.di.App
 import com.example.twitchstream.util.GAME_NAME
 import com.example.twitchstream.view.RateDialogFragment
 import com.example.twitchstream.view.videos_list.VideosListFragment
 import com.example.twitchstream.viewmodel.StreamListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 

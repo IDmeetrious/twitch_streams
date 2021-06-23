@@ -7,12 +7,12 @@ import android.net.NetworkRequest
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
+import javax.inject.Inject
 
 private const val TAG = "NetworkChecker"
 
 open class NetworkChecker : Fragment() {
     private lateinit var cm: ConnectivityManager
-    private lateinit var repository: Repository
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
@@ -35,7 +35,6 @@ open class NetworkChecker : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        repository = Repository(requireContext())
     }
 
     override fun onStart() {

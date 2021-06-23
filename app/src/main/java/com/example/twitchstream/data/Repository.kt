@@ -2,7 +2,7 @@ package com.example.twitchstream.data
 
 import android.content.Context
 import android.util.Base64
-import com.example.twitchstream.api.ApiClient
+import com.example.twitchstream.api.ApiRequests
 import com.example.twitchstream.api.response.TopGameResponse
 import com.example.twitchstream.api.response.TopVideosResponse
 import com.example.twitchstream.db.StreamDatabase
@@ -17,9 +17,11 @@ import java.net.URL
 
 private const val TAG = "Repository"
 
-class Repository(private val context: Context) {
+class Repository(
+    private val context: Context,
+    private val authApi: ApiRequests
+    ) {
     private val db = StreamDatabase
-    private val api = ApiClient().api
     private var disposable: Disposable? = null
 
     /** Created by ID
@@ -43,9 +45,9 @@ class Repository(private val context: Context) {
         }
     }
 
-    fun getGamesFromRemote(offset: Int): Single<TopGameResponse> = api.topGames(offset)
+    fun getGamesFromRemote(offset: Int): Single<TopGameResponse> = authApi.topGames(offset)
 
-    fun getVideosFromRemote(game: String): Single<TopVideosResponse> = api.topVideos(game)
+    fun getVideosFromRemote(game: String): Single<TopVideosResponse> = authApi.topVideos(game)
 
-    fun getVideo(videoId: String): Single<TopVideo> = api.getVideo(videoId)
+    fun getVideo(videoId: String): Single<TopVideo> = authApi.getVideo(videoId)
 }

@@ -4,17 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.twitchstream.app.App
+import com.example.twitchstream.di.App
 import com.example.twitchstream.data.Repository
 import com.example.twitchstream.db.entity.TopGame
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
 private const val TAG = "StreamListViewModel"
 class StreamListViewModel(): ViewModel() {
-    private val repository = Repository(App.getInstance().applicationContext)
+    @Inject lateinit var repository: Repository
     private var disposable: Disposable? = null
 
     private var _status = MutableStateFlow(false)
@@ -24,6 +25,7 @@ class StreamListViewModel(): ViewModel() {
     val topGames: LiveData<List<TopGame>> = _topGames
 
     init {
+        App.getInstance().appComponent.inject(this)
         getTopGames()
     }
 
