@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.twitchstream.R
+import com.example.twitchstream.di.App
 import com.example.twitchstream.util.GAME_ID
 import com.example.twitchstream.util.GAME_NAME
 import com.example.twitchstream.view.games_list.StreamListFragment
