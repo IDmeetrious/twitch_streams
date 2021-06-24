@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager
 import com.example.twitchstream.R
 import com.example.twitchstream.view.games_list.StreamListFragment
 import com.example.twitchstream.view.videos_list.VideosListFragment
+import com.example.twitchstream.view.widget.ProgressView
 import com.example.twitchstream.viewmodel.VideoListViewModel
 
 private const val TAG = "MainActivity"
@@ -19,6 +20,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        val progressView = ProgressView(this, null)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
     }
 
     override fun onBackPressed() {
